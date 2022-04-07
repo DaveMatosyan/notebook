@@ -22,6 +22,7 @@ export async function authentication(req, res, next) {
 
     req.user = {
       _id: decoded.id,
+      role: decoded.role,
     };
     // console.log(req.user);
 

@@ -15,6 +15,6 @@ export async function signInService(user, password) {
   if (!check) {
     return Promise.reject(401);
   }
-  const token = await sign({ id: user._id });
+  const token = await sign({ id: user._id }, { role: user.role });
   return token;
 }
