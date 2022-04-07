@@ -2,50 +2,41 @@ import mongoose from 'mongoose';
 // import Op from '../../models/product.js';
 import Order from '../../models/order.js';
 
-export async function getOneService(id) {
+export async function getOneService(id, userId) {
   const product = await Order
-    .findById(id)
-    .select('count')
-    .populate(
-      'laptop',
-      ['name', 'price', 'weigh', 'componyName', 'productType', 'foodType'],
-    );
+    .find({ userId }, { _id: id });
 
   return product;
 }
-export async function getAllService() {
-  const orders = await Order.find();
-  // .select('count')
-  // .populate(
-  //   'product',
-  //   ['name', 'price', 'weigh', 'componyName', 'productType', 'foodType'],
-  // );
-  console.log(orders);
+export async function getAllService(userId) {
+  const orders = await Order.find({ userId });
   return orders;
 }
 
-export async function createService(body) {
+export async function createService(body, userId) {
   const order = new Order({
     _id: mongoose.Types.ObjectId(),
     ...body,
+    userId,
   });
   await order.save();
-  // updateServiceUser(order._id, {});
-  // const result = await Order;+
-  // .select('count')
-  // .populate(
-  //   'laptop',
-  //   ['name', 'price', 'weigh', 'componyName', 'productType', 'foodType'],
-  // );
   return order;
 }
 
 export async function updateService(body, id) {
-  const products = await Order.updateOne({ _id: id }, body);
-  return products;
+  const geted = await getOneService();
+  if (geted) {
+    const product = await Order.updateOne({ _id: id }, body);
+    return product;
+  }
+  return Promise.reject();
 }
 
 export async function removeService(id) {
-  const products = await Order.remove({ _id: id });
-  return products;
+  const geted = await getOneService();
+  if (geted) {
+    const products = await Order.remove({ _id: id });
+    return products;
+  }
+  return Promise.reject();
 }

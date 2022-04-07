@@ -32,10 +32,6 @@ const User = mongoose.model('User', {
     required: false,
     default: false,
   },
-  orders: {
-    type: Array,
-    default: [],
-  },
 });
 
 export default User;

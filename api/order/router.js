@@ -7,7 +7,7 @@ import {
 } from './controller.js';
 import * as errorMessages from '../../constants/errorMessages.js';
 import { expressValidationResult } from '../../utils/middlewares.js';
-import { isUserExist } from './costumWalid.js';
+import * as customValidator from './costumWalid.js';
 
 const router = express.Router();
 
@@ -15,20 +15,32 @@ router.get('/', getAll);
 
 router.get(
   '/:id',
-  param('id', errorMessages.isntConsist).custom(isUserExist),
+  param('id', errorMessages.isntConsist).custom(customValidator.isOrderExist),
   getOne,
 );
 
 router.post(
   '/',
-  body('count', errorMessages.intErrorGenerator(0, 10000)).isInt({ min: 0 }, { max: 10000 }),
-  // body('user', errorMessages.wrongUser).custom(isUserExist),
+  body('count', errorMessages.intErrorGenerator(0, 10000)).optional().isInt({ min: 0 }, { max: 10000 }),
+  body('display', errorMessages.isntConsist).optional().custom(customValidator.isRamExist),
+  body('keyboard', errorMessages.isntConsist).optional().custom(customValidator.isKeyboardExist),
+  body('mouse', errorMessages.isntConsist).optional().custom(customValidator.isMouseExist),
+  body('ram', errorMessages.isntConsist).optional().custom(customValidator.isRamExist),
+  body('laptop', errorMessages.isntConsist).optional().custom(customValidator.isLaptopExist),
+  body('pc', errorMessages.isntConsist).optional().custom(customValidator.isPcExist),
   expressValidationResult,
   create,
 );
 
 router.patch(
   '/:id',
+  body('count', errorMessages.intErrorGenerator(0, 10000)).optional().isInt({ min: 0 }, { max: 10000 }),
+  body('display', errorMessages.isntConsist).optional().custom(customValidator.isRamExist),
+  body('keyboard', errorMessages.isntConsist).optional().custom(customValidator.isKeyboardExist),
+  body('mouse', errorMessages.isntConsist).optional().custom(customValidator.isMouseExist),
+  body('ram', errorMessages.isntConsist).optional().custom(customValidator.isRamExist),
+  body('laptop', errorMessages.isntConsist).optional().custom(customValidator.isLaptopExist),
+  body('pc', errorMessages.isntConsist).optional().custom(customValidator.isPcExist),
   expressValidationResult,
   update,
 );

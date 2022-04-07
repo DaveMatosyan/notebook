@@ -35,6 +35,11 @@ const Order = mongoose.model('Order', {
   count: {
     type: Number,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: false,
+  },
 });
 
 export default Order;

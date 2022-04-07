@@ -25,8 +25,8 @@ export async function signUp(req, res, next) {
     const { body } = req;
     const created = await createService(body);
     const token = sign({ _id: created._id });
-    console.log(created._id);
-    console.log(token);
+    // console.log(created._id);
+    // console.log(token);
     const htmlToken = createJWTContent(token);
     await mailSender(body.email, htmlToken);
     return res.send('confirm you email');

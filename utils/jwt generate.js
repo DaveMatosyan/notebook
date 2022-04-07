@@ -18,10 +18,12 @@ export async function authentication(req, res, next) {
     // eslint-disable-next-line prefer-destructuring
     header = header.split('Bearer ')[1];
     const decoded = jwt.verify(header, 'secret1');
+    // console.log(decoded);
 
     req.user = {
-      _id: decoded._id,
+      _id: decoded.id,
     };
+    // console.log(req.user);
 
     return next();
   } catch (err) {
