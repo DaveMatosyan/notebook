@@ -9,3 +9,19 @@ export function expressValidationResult(req, res, next) {
 
   return next();
 }
+
+export function roleChecker(rout, method) {
+  return function (req, res, next) {
+    const { role } = req.user;
+    if (role === 'USER' && method === 'ORDER') {
+      return next();
+    }
+    if (role === 'USER' && rout !== 'GET') {
+      return Promise.reject(409);
+    }
+    if (role !== 'SUPERADMIN' && method === 'USER') {
+      return Promise.reject(409);
+    }
+    return next();
+  };
+}

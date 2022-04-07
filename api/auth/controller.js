@@ -9,6 +9,7 @@ export async function signIn(req, res, next) {
   try {
     const { password, email } = req.body;
     const user = await getOneByEmailService(email);
+    // console.log(user.role);
     const token = await signInService(user, password);
     return res.send(token);
   } catch (err) {
@@ -24,6 +25,7 @@ export async function signUp(req, res, next) {
   try {
     const { body } = req;
     const created = await createService(body);
+    // console.log(created.role);
     const token = sign({ _id: created._id });
     // console.log(created._id);
     // console.log(token);

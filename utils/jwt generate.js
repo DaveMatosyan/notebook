@@ -1,5 +1,4 @@
 import jwt from 'jsonwebtoken';
-
 // eslint-disable-next-line import/prefer-default-export
 export function sign(obj) {
   return jwt.sign(obj, 'secret1', { expiresIn: '1h' });
@@ -18,13 +17,10 @@ export async function authentication(req, res, next) {
     // eslint-disable-next-line prefer-destructuring
     header = header.split('Bearer ')[1];
     const decoded = jwt.verify(header, 'secret1');
-    // console.log(decoded);
-
     req.user = {
       _id: decoded.id,
       role: decoded.role,
     };
-    // console.log(req.user);
 
     return next();
   } catch (err) {

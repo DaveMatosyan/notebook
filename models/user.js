@@ -24,7 +24,7 @@ const User = mongoose.model('User', {
   },
   role: {
     type: String,
-    required: false,
+    // required: false,
     default: 'USER',
   },
   isVerified: {
