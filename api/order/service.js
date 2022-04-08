@@ -23,19 +23,19 @@ export async function createService(body, userId) {
   return order;
 }
 
-export async function updateService(body, id) {
+export async function updateService(body, id, userId) {
   const geted = await getOneService();
   if (geted) {
-    const product = await Order.updateOne({ _id: id }, body);
+    const product = await Order.updateOne({ _id: id, userId }, body);
     return product;
   }
   return Promise.reject();
 }
 
-export async function removeService(id) {
+export async function removeService(id, userId) {
   const geted = await getOneService();
   if (geted) {
-    const products = await Order.remove({ _id: id });
+    const products = await Order.remove({ _id: id, userId });
     return products;
   }
   return Promise.reject();

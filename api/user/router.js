@@ -15,6 +15,7 @@ router.get('/', roleChecker(rout, 'GET'), getAll);
 
 router.get(
   '/:id',
+  roleChecker(rout, 'GET'),
   param('id')
     .custom(getValidator),
   expressValidationResult,
@@ -24,6 +25,7 @@ router.get(
 
 router.delete(
   '/:id',
+  roleChecker(rout, 'DELETE'),
   param('id').custom(getValidator),
   expressValidationResult,
   remove,
@@ -31,6 +33,7 @@ router.delete(
 
 router.patch(
   '/:id',
+  roleChecker(rout, 'PATCH'),
   param('id').optional().custom(getValidator),
   body('email', errorMessages.isntConsist).optional().custom(isUserDeclareded),
   body('fname', errorMessages.strngLengtErrorGenerator(4, 255)).optional().isLength({ min: 4 }, { max: 255 }),

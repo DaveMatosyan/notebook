@@ -6,21 +6,25 @@ import {
   getOne, getAll, create, update, remove,
 } from './controller.js';
 import * as errorMessages from '../../constants/errorMessages.js';
-import { expressValidationResult } from '../../utils/middlewares.js';
+import { expressValidationResult, roleChecker } from '../../utils/middlewares.js';
 import { indexCostumValidatr } from './costumWalid.js';
 
 const router = express.Router();
 
-router.get('/', getAll);
+const rout = 'PC';
+
+router.get('/', roleChecker(rout, 'GET'), getAll);
 
 router.get(
   '/:id',
+  roleChecker(rout, 'GET'),
   param('id', errorMessages.prodError).custom(indexCostumValidatr),
   getOne,
 );
 
 router.post(
   '/',
+  roleChecker(rout, 'POST'),
   body('weigh', errorMessages.intErrorGenerator(0, 1000000)).isInt({ min: 0 }, { max: 1000000 }),
   body('price', errorMessages.intErrorGenerator(0, 2000000)).isInt({ min: 0 }, { max: 2000000 }),
   body('isGaming', errorMessages.strngLengtErrorGenerator).isAlpha(),
@@ -32,6 +36,7 @@ router.post(
 
 router.patch(
   '/:id',
+  roleChecker(rout, 'PATCH'),
   param('id', errorMessages.isntConsist).custom(indexCostumValidatr),
   body('weigh', errorMessages.intErrorGenerator()).optional().isInt({ min: 0 }, { max: 1000000 }),
   body('price', errorMessages.intErrorGenerator(0, 1000000)).isInt({ min: 0 }, { max: 1000000 }),
@@ -43,6 +48,7 @@ router.patch(
 
 router.delete(
   '/:id',
+  roleChecker(rout, 'DELETE'),
   param('id', errorMessages.isntConsist).custom(indexCostumValidatr),
   expressValidationResult,
   remove,

@@ -6,21 +6,25 @@ import {
   getOne, getAll, create, update, remove,
 } from './controller.js';
 import * as errorMessages from '../../../constants/errorMessages.js';
-import { expressValidationResult } from '../../../utils/middlewares.js';
+import { expressValidationResult, roleChecker } from '../../../utils/middlewares.js';
 import { indexCostumValidatr } from './costumWalid.js';
 
 const router = express.Router();
 
-router.get('/', getAll);
+const rout = 'PROCESSOR';
+
+router.get('/', roleChecker(rout, 'GET'), getAll);
 
 router.get(
   '/:id',
+  roleChecker(rout, 'GET'),
   param('id', errorMessages.prodError).custom(indexCostumValidatr),
   getOne,
 );
 
 router.post(
   '/',
+  roleChecker(rout, 'POST'),
   body('name', errorMessages.strngLengtErrorGenerator(4, 255)).isLength({ min: 4 }, { max: 255 }),
   body('brand', errorMessages.strngLengtErrorGenerator(4, 255)).isLength({ min: 4 }, { max: 255 }),
   body('totalCores', errorMessages.intErrorGenerator(1, 10000)).isInt({ min: 1 }, { max: 10000 }),
@@ -33,6 +37,7 @@ router.post(
 
 router.patch(
   '/:id',
+  roleChecker(rout, 'PATCH'),
   body('name', errorMessages.strngLengtErrorGenerator(4, 255)).isLength({ min: 4 }, { max: 255 }),
   body('brand', errorMessages.strngLengtErrorGenerator(4, 255)).isLength({ min: 4 }, { max: 255 }),
   body('totalCores', errorMessages.intErrorGenerator(1, 10000)).isInt({ min: 1 }, { max: 10000 }),
@@ -45,6 +50,7 @@ router.patch(
 
 router.delete(
   '/:id',
+  roleChecker(rout, 'DELETE'),
   param('id', errorMessages.isntConsist).custom(indexCostumValidatr),
   expressValidationResult,
   remove,

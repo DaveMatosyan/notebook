@@ -45,8 +45,8 @@ export async function update(req, res, next) {
 
 export async function remove(req, res, next) {
   try {
-    const { params: { id } } = req;
-    const deletedProduct = await removeService(id);
+    const { params: { id }, user } = req;
+    const deletedProduct = await removeService(id, user._id);
     return res.send(JSON.stringify(deletedProduct));
   } catch (err) {
     return next(err);

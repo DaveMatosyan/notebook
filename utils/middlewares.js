@@ -1,3 +1,4 @@
+/* eslint-disable prefer-promise-reject-errors */
 /* eslint-disable import/prefer-default-export */
 import { validationResult } from 'express-validator';
 
@@ -17,10 +18,11 @@ export function roleChecker(rout, method) {
       return next();
     }
     if (role === 'USER' && rout !== 'GET') {
-      return Promise.reject(409);
+      // console.log('sssssss');
+      return res.status(409).json({ massage: 'access denied' });
     }
     if (role !== 'SUPERADMIN' && method === 'USER') {
-      return Promise.reject(409);
+      return res.status(409).json({ massage: 'access denied' });
     }
     return next();
   };
